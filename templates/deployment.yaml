@@ -1,0 +1,41 @@
+{{- range .Values.runners }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}
+  namespace: github-runners
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      containers:
+        - name: runner
+          image: myoung34/github-runner:latest
+          env:
+            - name: REPO_URL
+              value: "{{ .repoUrl }}"
+            - name: RUNNER_NAME
+              value: "{{ .name }}"
+            - name: RUNNER_LABELS
+              value: "{{ .labels }}"
+            - name: GITHUB_PAT
+              valueFrom:
+                secretKeyRef:
+                  name: github-runner-secret
+                  key: token
+          volumeMounts:
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket
+---
+{{- end }}

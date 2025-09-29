@@ -1,0 +1,12 @@
+runners:
+  - name: repo1-runner
+    repoUrl: "https://github.com/YOUR-USERNAME/repo1"
+    labels: "self-hosted,repo1"
+  - name: repo2-runner
+    repoUrl: "https://github.com/YOUR-USERNAME/repo2"
+    labels: "self-hosted,repo2"
+  - name: repo3-runner
+    repoUrl: "https://github.com/YOUR-USERNAME/repo3"
+    labels: "self-hosted,repo3"
+
+githubPat: "ghp_xxxxxxxxxxxxxxxxxxxxx"
