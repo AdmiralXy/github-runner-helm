@@ -5,7 +5,7 @@ metadata:
   name: {{ .name }}
   namespace: github-runners
 spec:
-  replicas: 1
+  replicas: {{ .replicas | default 1 }}
   selector:
     matchLabels:
       app: {{ .name }}
@@ -29,13 +29,12 @@ spec:
                 secretKeyRef:
                   name: github-runner-secret
                   key: token
-          volumeMounts:
-            - name: docker-sock
-              mountPath: /var/run/docker.sock
-      volumes:
-        - name: docker-sock
-          hostPath:
-            path: /var/run/docker.sock
-            type: Socket
+            - name: DOCKER_HOST
+              value: "tcp://localhost:2375"
+        - name: dind
+          image: docker:dind
+          securityContext:
+            privileged: true
+          args: ["--host=tcp://0.0.0.0:2375"]
 ---
 {{- end }}
