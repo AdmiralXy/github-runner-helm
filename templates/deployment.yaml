@@ -24,7 +24,7 @@ spec:
               value: "{{ .name }}"
             - name: RUNNER_LABELS
               value: "{{ .labels }}"
-            - name: GITHUB_ACCESS_TOKEN
+            - name: ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: github-runner-secret
